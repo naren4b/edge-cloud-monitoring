@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: telegraf-srv
+  namespace: monitoring
+  labels:
+    k8s-app: telegraf-srv
+  annotations:
+    owner: ""
+    prometheus.io/scrap: 'true'
+spec:
+  ports:
+  - name: influx-api
+    port: 80
+    targetPort: 8186
+    protocol: TCP
+  - name: prometheus
+    port: 9273
+    targetPort: 9273
+  selector:
+    k8s-app: telegraf-srv

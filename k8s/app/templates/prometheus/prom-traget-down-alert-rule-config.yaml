@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: node-alert
+  namespace: monitoring
+data:
+  node-alert.yml: | 
+    groups:
+    - name: Node Alerts
+      rules:
+        - alert: Critical-Alert-LostConnectivityToTarget
+          expr: up == 0
+          for: 1m
+          labels:
+             severity: critical
+          annotations:
+              summary: "Critical-Alert: Lost Connectivity to the Target "
+              description: "Critical-Alert: Lost Connectivity to the Target "
+        - alert: Edge-LostConnectivityToTarget
+          expr: edge_health == 0
+          for: 1m
+          labels:
+             severity: critical
+          annotations:
+              summary: "Critical-Alert: Lost Connectivity to the EDGE "
+              description: "Critical-Alert: Lost Connectivity to the EDGE "
+  

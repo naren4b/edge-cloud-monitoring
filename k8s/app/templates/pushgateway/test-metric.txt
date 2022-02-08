@@ -1,0 +1,36 @@
+# TYPE naren_test_metric_collection_count gauge
+# HELP naren_test_metric_collection_count Metric Collection Count
+naren_test_metric_collection_count 181294
+# TYPE naren_test_status gauge
+# HELP naren_test_status FreeIPA Directory Server status (ipactl status) 0 - RUNNING, 1 - STOPPED, 2 - TIMEDOUT Getting Status
+naren_test_status 0
+# TYPE naren_test_total_connection_count gauge
+# HELP naren_test_total_connection_count Total number of connections with LDAP server
+naren_test_total_connection_count 13
+# TYPE naren_test_established_connection_count gauge
+# HELP naren_test_established_connection_count Number of ESTABLISHED connections with LDAP server
+naren_test_established_connection_count 5
+# TYPE naren_test_closed_connection_count gauge
+# HELP naren_test_closed_connection_count Number of CLOSE connections with LDAP server
+naren_test_closed_connection_count 0
+# TYPE naren_test_close_wait_connection_count gauge
+# HELP naren_test_close_wait_connection_count Number of CLOSE_WAIT connections with LDAP server
+naren_test_close_wait_connection_count 0
+# TYPE naren_test_total_disk_space_megabytes gauge
+# HELP naren_test_total_disk_space_megabytes Total FreeIPA data volume size
+naren_test_total_disk_space_megabytes 63996
+# TYPE naren_test_free_disk_space_megabytes gauge
+# HELP naren_test_free_disk_space_megabytes Space left in FreeIPA data volume
+naren_test_free_disk_space_megabytes 60758
+# TYPE naren_test_ldap_query_execution_time gauge
+# HELP naren_test_ldap_query_execution_time LDAP search of a dummy user in freeIPA
+naren_test_ldap_query_execution_time 32
+# TYPE naren_test_replication_status gauge
+# HELP naren_test_replication_status FreeIPA server replication status
+naren_test_replication_status 1
+# TYPE naren_test_user_creation_time_ms gauge
+# HELP naren_test_user_creation_time_ms User creation time
+naren_test_user_creation_time_ms 4
+# TYPE naren_test_monitoring_collection_time_ms gauge
+# HELP naren_test_monitoring_collection_time_ms Time Taken in freeIPA for monitoring
+naren_test_monitoring_collection_time_ms 11000

@@ -1,0 +1,20 @@
+global:
+  http_config: {}
+  smtp_hello: localhost
+  smtp_require_tls: true
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 2m
+  repeat_interval: 1h
+  receiver: 'web.hook'
+inhibit_rules:
+  - source_match:
+      severity: critical
+    target_match:
+      severity: warning
+    equal: ['alertname', 'dev', 'instance']
+receivers:
+- name: 'web.hook'
+  webhook_configs:
+    - url: http://notify.naren.com/notify

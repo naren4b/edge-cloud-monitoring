@@ -1,0 +1,2 @@
+connectors:
+- notify: "https://outlook.office.com/webhook/...."

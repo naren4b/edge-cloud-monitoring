@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  annotations:
+    owner: ""
+  name: telegraf-collector
+  namespace: monitoring
+  labels:
+    app: telegraf-collector
+data:
+  telegraf.conf: |+
+    [global_tags]
+      dc = "dc1"
+    [agent]
+      interval = "30s"
+      round_interval = true
+      metric_batch_size =  1000
+      metric_buffer_limit = 10000
+      collection_jitter = "0s"
+      flush_interval = "30s"
+      flush_jitter = "0s"
+      precision = ""
+      debug = false
+      quiet = false
+      logfile =  ""
+      omit_hostname = false
+    [[inputs.http_listener]]
+      service_address = ":8186"
+      read_timeout = "10s"
+      write_timeout = "10s"
+    [[outputs.prometheus_client]]
+      listen = ":9273"
+      expiration_interval = "120s"
+

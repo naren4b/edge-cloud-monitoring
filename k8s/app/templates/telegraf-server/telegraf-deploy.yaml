@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegraf-srv
+  namespace: monitoring
+  labels:
+    k8s-app: telegraf-srv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: telegraf-srv
+  template:
+    metadata:
+      labels:
+        k8s-app: telegraf-srv
+    spec:
+      containers:
+      - name: telegraf-agent
+        image: telegraf:1.21.3
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: 1Gi
+          limits:
+            memory: 4Gi
+        env:
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        volumeMounts:
+        - name: config
+          mountPath: /etc/telegraf
+      volumes:
+      - name: config
+        configMap:
+          name: telegraf-collector

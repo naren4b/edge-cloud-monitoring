@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prom-config
+  namespace: monitoring
+data:
+  prometheus.yml: | 
+    global:
+      scrape_interval: 15s
+    alerting:
+     alertmanagers:
+      - scheme: http
+        timeout: 10s
+        api_version: v1
+        static_configs:
+        - targets:
+          - alertmanager  
+    rule_files:
+      - /etc/rules/*.yml
+    remote_write:
+       - url: http://vminsert.cm-ops:8480/insert/0/prometheus/
+    scrape_configs:
+      - job_name: 'prometheus'
+        scrape_interval: 5s
+        static_configs:
+          - targets: ['prometheus:80']
+      - job_name: 'pushgateway'
+        honor_labels: true
+        static_configs:
+          - targets: ['pushgateway:80']
+        tls_config:
+          insecure_skip_verify: true   
+      - job_name: 'telegraf-srv'
+        honor_labels: true
+        static_configs:
+          - targets: ['telegraf-srv:9273']
+        tls_config:
+          insecure_skip_verify: true                       
+

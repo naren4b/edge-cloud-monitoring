@@ -1,0 +1,12 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: alertmanager
+  namespace: monitoring
+data:
+  alertmanager.yml: "global:\r\n  http_config: {}\r\n  smtp_hello: localhost\r\n  smtp_require_tls:
+    true\r\nroute:\r\n  group_by: ['alertname']\r\n  group_wait: 30s\r\n  group_interval:
+    2m\r\n  repeat_interval: 1h\r\n  receiver: 'web.hook'\r\ninhibit_rules:\r\n  -
+    source_match:\r\n      severity: critical\r\n    target_match:\r\n      severity:
+    warning\r\n    equal: ['alertname', 'dev', 'instance']\r\nreceivers:\r\n- name:
+    'web.hook'\r\n  webhook_configs:\r\n    - url: http://notify.naren.com/notify"

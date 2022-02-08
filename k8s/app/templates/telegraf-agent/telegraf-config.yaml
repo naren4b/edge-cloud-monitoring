@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: telegraf-agent
+  namespace: monitoring
+  labels:
+    app: telegraf-agent
+data:
+  telegraf.conf: |+
+    [global_tags]
+      dc = "local"
+      edge = "$HOSTNAME"
+      my_agent_id = "001"
+    [agent]
+      interval = "30s"
+      round_interval = true
+      metric_batch_size =  1000
+      metric_buffer_limit = 30000
+      collection_jitter = "0s"
+      flush_interval = "50s"
+      flush_jitter = "10s"
+      precision = ""
+      debug = false
+      quiet = false
+      logfile =  ""
+      omit_hostname = false
+    [[outputs.influxdb]]
+      urls = [ "http://telegraf-srv.naren.com" ]
+      database = "telegraf"
+      retention_policy = ""
+      timeout = "5s"
+      content_encoding = "gzip"
+      insecure_skip_verify = true
+    [[inputs.prometheus]]
+      urls = ["http://node-exporter.kube-system.svc.cluster.local:9100/metrics"]
+      namepass = ["node_cpu_seconds_total", "node_memory_MemFree_bytes", "node_memory_MemTotal_bytes", "node_memory_MemAvailable_bytes", "node_filesystem_size_bytes", "node_filesystem_free_bytes", "node_filesystem_avail_bytes", "node_network_receive_bytes_total", "node_network_transmit_bytes_total", "node_timex_offset_seconds", "node_boot_time_seconds", "node_hwmon_temp_*", "node_disk_*", "smartmon_*"]
+      bearer_token = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+      insecure_skip_verify = true
+      response_timeout = "20s"
+    

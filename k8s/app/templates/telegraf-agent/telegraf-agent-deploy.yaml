@@ -1,0 +1,78 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegraf-agent
+  namespace: monitoring
+  labels:
+    app: telegraf-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telegraf-agent
+  template:
+    metadata:
+      labels:
+        app: telegraf-agent
+        config: dynamic
+    spec:
+      containers:
+      - name: telegraf-agent
+        image: telegraf:1.21.3
+        imagePullPolicy: IfNotPresent
+        args: ["--config","/etc/telegraf/telegraf.conf", "--config-directory", "/etc/telegraf.d"]
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 0.1
+          limits:
+            memory: 1Gi
+            cpu: 1
+        env:
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: "HOST_PROC"
+          value: "/rootfs/proc"
+        - name: "HOST_SYS"
+          value: "/rootfs/sys"
+        volumeMounts:
+        - name: config
+          mountPath: /etc/telegraf
+        - name: config-dir
+          mountPath: /etc/telegraf.d
+        - name: sysro
+          mountPath: /rootfs/sys
+          readOnly: true
+        - name: procro
+          mountPath: /rootfs/proc
+          readOnly: true
+        - name: varrunutmpro
+          mountPath: /var/run/utmp
+          readOnly: true
+        - name: dockersock
+          mountPath: /var/run/docker.sock
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: telegraf-agent
+      - name: config-dir
+        configMap:
+          name: telegraf-optional
+          optional: true
+      - name: sysro
+        hostPath:
+          path: /sys
+      - name: procro
+        hostPath:
+          path: /proc
+      - name: varrunutmpro
+        hostPath:
+          path: /var/run/utmp
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock
+      serviceAccountName: telegraf-agent

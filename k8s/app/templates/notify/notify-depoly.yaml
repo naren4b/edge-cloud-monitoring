@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notify
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notify
+  template:
+    metadata:
+      name: notify
+      labels:
+        app: notify
+    spec:
+      containers:
+      - name: notify
+        image: quay.io/prometheusmsteams/prometheus-msteams
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: notify
+          containerPort: 2000
+        env:
+        - name: TEAMS_INCOMING_WEBHOOK_URL
+          value: "https://outlook.office.com/webhook/....."  
+        - name: TEAMS_REQUEST_URI
+          value: "notify"    
+      

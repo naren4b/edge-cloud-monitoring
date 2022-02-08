@@ -1,0 +1,11 @@
+groups:
+  - name: Node Alerts
+    rules:
+      - alert: Critical-Alert-LostConnectivityToTarget
+        expr: up == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical-Alert: Lost Connectivity to the Target {{$labels.job}} : {{$labels.instance}}"
+          description: "Critical-Alert: Lost Connectivity to the Target {{$labels.job}} : {{$labels.instance}}"

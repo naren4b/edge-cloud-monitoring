@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  metric-app:
+    image: "naren4b/metric-simulator"
+    entrypoint:
+      - /bin/metric-simulator
+      - --mc=${NUMBER_OF_METRIC}   # Chnage this value for number of random metrics
+      - --ac=${ACC_ID} # Change this value making the tenant
+    # ports:
+    #   - "8082:8080"  
+  prometheus:
+    image: "prom/prometheus"
+    volumes:
+        - ./prom/prometheus${ACC_ID}:/etc/prometheus
+    # ports:
+    #   - "9091:9090"    
+networks: 
+  default: 
+    external: 
+      name: dc-simulator 
+
